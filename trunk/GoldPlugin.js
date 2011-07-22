@@ -33,7 +33,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.62';
+    h += ' <form id="_book" onsubmit="return false;">V1.63';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -760,15 +760,26 @@ function _NotEnoughMoney(price)
 		var moneyStart = doc.indexOf("可用资金：");
 		var moneyEnd = doc.indexOf("最多可买：");
 		var money = doc.substring(moneyStart + 5, moneyEnd);
+		//页面不对
 		if ( ( money.indexOf("美元") >= 0 )
 		  || ( money.indexOf("待查询") >= 0 ) )
 		{
 			_PreventTimeOut();
-			return true;	//页面不对
+			return true;	
 		}
-		else if ( parseFloat( money ) < ( price * mount ) )
+		//余额不足
+		else if ( parseFloat( money ) < _Round( price * mount ) )
 		{
-			return true;	//余额不足
+			if ( parseFloat( money ) < _Round( price * 100 ) )
+			{
+				return true;
+			}
+			else
+			{
+				//自动设置可以买入的数量
+				document.getElementById("_txtMount").value = Math.floor( money / price);
+				return false;
+			}
 		}
 		else
 		{
