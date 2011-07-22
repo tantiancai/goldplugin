@@ -548,7 +548,7 @@ function _Confirm()
 		else
 		{
 			//等待
-			//_ShowMsg(_Now() + "等待页面更新");
+			_ShowMsg(_Now() + " 正在交易");
 		}
 	}
 	catch (e)
