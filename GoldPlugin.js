@@ -777,7 +777,7 @@ function _NotEnoughMoney(price)
 			else
 			{
 				//自动设置可以买入的数量
-				document.getElementById("_txtMount").value = Math.floor( money / price);
+				document.getElementById("_txtMount").value = Math.floor( money / price );
 				return false;
 			}
 		}
