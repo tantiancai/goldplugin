@@ -33,7 +33,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.63';
+    h += ' <form id="_book" onsubmit="return false;">V1.64';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -85,16 +85,16 @@ function _GoldPluginInit()
 function _ForceBuy()
 {
 	_StopAll();
-	_Buy(-1);
 	_AutoStart();
+	_Buy(-1);
 }
 
 //强行卖出
 function _ForceSell()
 {
 	_StopAll();
-	_Sell(-1);
 	_AutoStart();
+	_Sell(-1);
 }
 
 function _Test()
@@ -315,16 +315,16 @@ function _ReadyToGo_Buy(buy, upOrDown)
 	if ( _baseBuy < _buyTop )
 	{
 		_StopAll();
-		_Buy(buy);
 		_AutoStart();
+		_Buy(buy);
 	}
 	else
 	{
 		if ( ( buy - _buyBtm ) >= ( _priceDiff / 2 ) )
 		{
 			_StopAll();
-			_Buy(buy);
 			_AutoStart();
+			_Buy(buy);
 		}
 	}
 
@@ -354,8 +354,8 @@ function _ReadyToGo_Sell(sell, upOrDown)
 	if ( _baseSell > _sellBtm )
 	{
 		_StopAll();
-		_Sell(sell);
 		_AutoStart();
+		_Sell(sell);
 	}
 	else
 	{
@@ -363,8 +363,8 @@ function _ReadyToGo_Sell(sell, upOrDown)
 		  && ( sell <= _sellBtm ) )
 		{
 			_StopAll();
-			_Sell(sell);
 			_AutoStart();
+			_Sell(sell);
 		}
 	}
 
