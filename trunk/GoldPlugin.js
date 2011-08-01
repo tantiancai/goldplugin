@@ -3,7 +3,6 @@ var _intervalPreventTimeOut;
 var _intervalGetHistory;
 var _intervalReadyToGo;
 var _intervalConfirm;
-var _intervalTest;
 var _level = 0;
 var _status = 0;		//0：初始化；1：买；2：卖
 var _priceDiff = 0;		//买卖的差价 
@@ -27,13 +26,12 @@ var _areaCode = "";
 var _dseSessionId = "";
 var _fluctuations = new Array();	//分析实时报价的语料
 
-
 function _GoldPluginInit()
 {
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.65';
+    h += ' <form id="_book" onsubmit="return false;">V1.66';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -524,9 +522,16 @@ function _Confirm()
 			url += _dseSessionId;
 			frames['mainFrame'].location.href = url;
 		}
+		//等待
+		else if ( ( frame.document.title.indexOf("交易首页") >= 0 )
+			   || ( frame.document.readyState != "interactive" )
+			   || ( frame.document.readyState != "complete" ) )
+		{
+			//等待
+			_ShowMsg(_Now() + " 正在交易");
+		}
 		//交易失败
-		else if( ( frame.document.title.indexOf("交易首页") < 0 )
-			  && ( typeof frame.document.documentElement.innerText != "undefined" ) )
+		else
 		{
 			clearInterval(_intervalConfirm);
 			strStart = "提示信息:";
@@ -544,11 +549,6 @@ function _Confirm()
 			url = "/servlet/ICBCINBSCenterServlet?id=160101&dse_sessionId=";
 			url += _dseSessionId;
 			frames['mainFrame'].location.href = url;
-		}
-		else
-		{
-			//等待
-			_ShowMsg(_Now() + " 正在交易");
 		}
 	}
 	catch (e)
