@@ -31,7 +31,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.67';
+    h += ' <form id="_book" onsubmit="return false;">V1.68';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -310,23 +310,23 @@ function _ReadyToGo_Buy(buy, upOrDown)
 		_buyBtm = buy;
 	}
 
+	_ShowMsg("实时买入价："+buy+"<br>高："+_buyTop+" 低："+_buyBtm+"<br>即将买入，请勿点击任何链接");
+
 	if ( _baseBuy < _buyTop )
 	{
 		_StopAll();
-		_Buy(buy);
 		_AutoStart();
+		_Buy(buy);
 	}
 	else
 	{
 		if ( ( buy - _buyBtm ) >= ( _priceDiff / 2 ) )
 		{
 			_StopAll();
-			_Buy(buy);
 			_AutoStart();
+			_Buy(buy);
 		}
 	}
-
-	_ShowMsg("实时买入价："+buy+"<br>高："+_buyTop+" 低："+_buyBtm+"<br>即将买入，请勿点击任何链接");
 }
 
 function _ReadyToGo_Sell(sell, upOrDown)
@@ -349,11 +349,13 @@ function _ReadyToGo_Sell(sell, upOrDown)
 		_sellBtm = sell;
 	}
 
+	_ShowMsg("实时卖出价："+sell+"<br>高："+_sellTop+" 低："+_sellBtm+"<br>即将卖出，请勿点击任何链接");
+
 	if ( _baseSell > _sellBtm )
 	{
 		_StopAll();
-		_Sell(sell);
 		_AutoStart();
+		_Sell(sell);
 	}
 	else
 	{
@@ -361,13 +363,10 @@ function _ReadyToGo_Sell(sell, upOrDown)
 		  && ( sell <= _sellBtm ) )
 		{
 			_StopAll();
-			_Sell(sell);
 			_AutoStart();
+			_Sell(sell);
 		}
 	}
-
-	_ShowMsg("实时卖出价："+sell+"<br>高："+_sellTop+" 低："+_sellBtm+"<br>即将卖出，请勿点击任何链接");
-
 }
 
 //按价格排序
@@ -437,13 +436,19 @@ function _Confirm()
 		var doc;
 		var mount;
 
+		//等待
+		if ( ( frame.document.title.indexOf("交易首页") >= 0 )
+		  || ( frame.document.readyState != "interactive" )
+		  || ( frame.document.readyState != "complete" ) )
+		{
+			//等待
+			_ShowMsg(_Now() + " 正在交易");
+		}
 		//确认页面
-		if ( frame.document.title.indexOf("即时买卖确定页") >= 0 )
+		else if ( frame.document.title.indexOf("即时买卖确定页") >= 0 )
 		{
 			//交互状态（页面已经加载完毕）
-			if ( ( ( frame.document.readyState == "interactive" )
-			    || ( frame.document.readyState == "complete" ) )
-			  && ( typeof frame.redundance != "undefined" ) )
+			if ( typeof frame.redundance != "undefined" )
 			{
 				if ( ( frame.redundance == false )
 				  && ( typeof frame.document.documentElement.innerText != "undefined" )
@@ -487,6 +492,7 @@ function _Confirm()
 						_dealTime = time;
 						_SetLog( _Now() + " 出现异常" );
 					}
+
 					if (frame.document.InfoForm.clock.value.indexOf("00:01") >= 0)
 					{
 						clearInterval(_intervalConfirm);
@@ -521,14 +527,6 @@ function _Confirm()
 			url = "/servlet/ICBCINBSCenterServlet?id=160101&dse_sessionId=";
 			url += _dseSessionId;
 			frames['mainFrame'].location.href = url;
-		}
-		//等待
-		else if ( ( frame.document.title.indexOf("交易首页") >= 0 )
-			   || ( frame.document.readyState != "interactive" )
-			   || ( frame.document.readyState != "complete" ) )
-		{
-			//等待
-			_ShowMsg(_Now() + " 正在交易");
 		}
 		//交易失败
 		else
