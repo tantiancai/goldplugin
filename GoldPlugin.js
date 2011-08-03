@@ -24,7 +24,7 @@ var _dealTime;			//交易时间
 var _xmlhttp;
 var _areaCode = "";
 var _dseSessionId = "";
-var _dseApplicationId = "";
+var _dsePageId = "";
 var _fluctuations = new Array();	//分析实时报价的语料
 
 function _GoldPluginInit()
@@ -585,13 +585,11 @@ function _GetHistory_realtime()
 	try
 	{
 		var form = frames['mainFrame'].frames['_left'].picform;
-		_dseApplicationId = form.dse_applicationId.value;
-		_dseOperationName = form.dse_operationName.value;
 		_dsePageId = form.dse_pageId.value;
 
 		var prams = "dse_sessionId=" + _dseSessionId;
-		prams += "&dse_applicationId=" + _dseApplicationId;
-		prams += "&dse_operationName=" + _dseOperationName;
+		prams += "&dse_applicationId=-1";
+		prams += "&dse_operationName=per_GoldQueryPriceOp";
 		prams += "&dse_pageId=" + _dsePageId;
 		prams += "&step=1";
 		prams += "&goldType=rmb_903";	//针对纸白银，以后会增加选择
@@ -609,8 +607,8 @@ function _GetHistory_realtime()
 	catch (e)
 	{
 		var prams = "dse_sessionId=" + _dseSessionId;
-		prams += "&dse_applicationId=" + _dseApplicationId;
-		prams += "&dse_operationName=" + _dseOperationName;
+		prams += "&dse_applicationId=-1";
+		prams += "&dse_operationName=per_GoldQueryPriceOp";
 		prams += "&dse_pageId=" + _dsePageId;
 		prams += "&step=1";
 		prams += "&goldType=rmb_903";	//针对纸白银，以后会增加选择
@@ -624,7 +622,7 @@ function _GetHistory_realtime()
 		var url = "/servlet/ICBCINBSReqServlet";
 
 		_getXmlHttp(url, prams, _AnalyzeData_realtime);
-		_ShowMsg(_Now() + e.message);
+		//_ShowMsg(_Now() + e.message);
 	}
 }
 
