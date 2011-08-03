@@ -24,6 +24,7 @@ var _dealTime;			//交易时间
 var _xmlhttp;
 var _areaCode = "";
 var _dseSessionId = "";
+var _dseApplicationId = "";
 var _fluctuations = new Array();	//分析实时报价的语料
 
 function _GoldPluginInit()
@@ -31,7 +32,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.73';
+    h += ' <form id="_book" onsubmit="return false;">V1.74';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -584,17 +585,21 @@ function _GetHistory_realtime()
 	try
 	{
 		var form = frames['mainFrame'].frames['_left'].picform;
-		var prams = "dse_sessionId=" + form.dse_sessionId.value;
-		prams += "&dse_applicationId=" + form.dse_applicationId.value;
-		prams += "&dse_operationName=" + form.dse_operationName.value;
-		prams += "&dse_pageId=" + form.dse_pageId.value;
+		_dseApplicationId = form.dse_applicationId.value;
+		_dseOperationName = form.dse_operationName.value;
+		_dsePageId = form.dse_pageId.value;
+
+		var prams = "dse_sessionId=" + _dseSessionId;
+		prams += "&dse_applicationId=" + _dseApplicationId;
+		prams += "&dse_operationName=" + _dseOperationName;
+		prams += "&dse_pageId=" + _dsePageId;
 		prams += "&step=1";
 		prams += "&goldType=rmb_903";	//针对纸白银，以后会增加选择
 		prams += "&kType=realtime";
 		prams += "&pageType=big";
 		prams += "&curtype=903";		//针对纸白银，以后会增加选择
 		prams += "&acflag=1";
-		prams += "&area_code=" + form.area_code.value;
+		prams += "&area_code=" + _areaCode;
 		prams += "&submitFlag=1";
 
 		var url = "/servlet/ICBCINBSReqServlet";
@@ -603,6 +608,22 @@ function _GetHistory_realtime()
 	}
 	catch (e)
 	{
+		var prams = "dse_sessionId=" + _dseSessionId;
+		prams += "&dse_applicationId=" + _dseApplicationId;
+		prams += "&dse_operationName=" + _dseOperationName;
+		prams += "&dse_pageId=" + _dsePageId;
+		prams += "&step=1";
+		prams += "&goldType=rmb_903";	//针对纸白银，以后会增加选择
+		prams += "&kType=realtime";
+		prams += "&pageType=big";
+		prams += "&curtype=903";		//针对纸白银，以后会增加选择
+		prams += "&acflag=1";
+		prams += "&area_code=" + _areaCode;
+		prams += "&submitFlag=1";
+
+		var url = "/servlet/ICBCINBSReqServlet";
+
+		_getXmlHttp(url, prams, _AnalyzeData_realtime);
 		_ShowMsg(_Now() + e.message);
 	}
 }
