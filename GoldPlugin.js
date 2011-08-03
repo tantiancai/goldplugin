@@ -32,7 +32,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.74';
+    h += ' <form id="_book" onsubmit="return false;">V1.75';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -778,7 +778,7 @@ function _AnalyzeData_level1(oilprices)
 
 function _GetPH(sell)
 {
-	var ph = 0;		//浮动盈亏
+	var ph;			//浮动盈亏
 	var mount = 0;	//仓里总数量
 	var stock = 0;	//仓里总额
 
@@ -790,6 +790,10 @@ function _GetPH(sell)
 	if (stock > 0)
 	{
 		ph = _Round(sell * mount - stock);
+	}
+	else
+	{
+		ph = "尚未买入";
 	}
 	return ph;
 }
