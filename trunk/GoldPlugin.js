@@ -31,7 +31,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.71';
+    h += ' <form id="_book" onsubmit="return false;">V1.72';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -436,10 +436,15 @@ function _Confirm()
 		var doc;
 		var mount;
 
-		//等待
-		if ( ( frame.document.title.indexOf("交易首页") >= 0 )
-		  || ( frame.document.readyState != "interactive" )
-		  || ( frame.document.readyState != "complete" ) )
+		//页面尚未加载完毕
+		if ( ( frame.document.readyState != "interactive" )
+		  && ( frame.document.readyState != "complete" ) )
+		{
+			//等待
+			_ShowMsg(_Now() + " 正在交易");
+		}
+		//留在首页，尚未切换
+		else if (frame.document.title.indexOf("交易首页") >= 0)
 		{
 			//等待
 			_ShowMsg(_Now() + " 正在交易");
