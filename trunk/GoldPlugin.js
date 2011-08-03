@@ -31,7 +31,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.70';
+    h += ' <form id="_book" onsubmit="return false;">V1.71';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -681,10 +681,9 @@ function _AnalyzeData_level1(oilprices)
 		{
 			average = _Round(totalPrice / oilprices.length);
 		}
-		_ShowDebug("高："+_TopPrice+" 低："+_BottomPrice+" 现："+price+" 均："+average);
 
 		var ph = _GetPH(price - _priceDiff / 2);
-		_ShowMsg("浮动盈亏：" + ph);
+		_ShowDebug("高："+_TopPrice+" 低："+_BottomPrice+" 现："+price+" 均："+average+"<br>浮动盈亏："+ph);
 
 		//如果跌，进入15秒历史实时报价查询
 		var element = _fluctuations.pop();
