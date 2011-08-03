@@ -31,7 +31,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.72';
+    h += ' <form id="_book" onsubmit="return false;">V1.73';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -392,7 +392,7 @@ function _Sell(price)
 				frames['mainFrame'].frames['_right'].InfoForm.goldAmount.value = _boughtList[0].mount;
 				frames['mainFrame'].frames['_right'].form_submit();
 				_intervalConfirm = setInterval(_Confirm, 500);	//0.5秒钟
-				_ShowMsg(_Now() + "正在卖出");
+				_ShowMsg(_Now() + " 正在卖出");
 			}
 		}
 		else
@@ -416,7 +416,7 @@ function _Buy(price)
 		frames['mainFrame'].frames['_right'].InfoForm.goldAmount.value = mount;
 		frames['mainFrame'].frames['_right'].form_submit();
 		_intervalConfirm = setInterval(_Confirm, 500);	//0.5秒钟
-		_ShowMsg(_Now() + "正在买入");
+		_ShowMsg(_Now() + " 正在买入");
 	}
 	catch (e)
 	{
@@ -441,13 +441,13 @@ function _Confirm()
 		  && ( frame.document.readyState != "complete" ) )
 		{
 			//等待
-			_ShowMsg(_Now() + " 正在交易");
+			_ShowMsg(_Now() + " 等待页面加载");
 		}
 		//留在首页，尚未切换
 		else if (frame.document.title.indexOf("交易首页") >= 0)
 		{
 			//等待
-			_ShowMsg(_Now() + " 正在交易");
+			_ShowMsg(_Now() + " 等待显示确认页面");
 		}
 		//确认页面
 		else if ( frame.document.title.indexOf("即时买卖确定页") >= 0 )
@@ -481,6 +481,7 @@ function _Confirm()
 						_dealPrice = _Round( price / mount );
 						_dealTime = time;
 						frame.isqueryed();
+						_ShowMsg(_Now() + " 等待显示买入结果页面");
 					}
 					//卖出
 					else if (frame.document.InfoForm.cashnote.value == "M046")
@@ -491,6 +492,7 @@ function _Confirm()
 						_dealPrice = _Round( price / mount );
 						_dealTime = time;
 						frame.isqueryed();
+						_ShowMsg(_Now() + " 等待显示卖出结果页面");
 					}
 					else
 					{
@@ -546,7 +548,7 @@ function _Confirm()
 			}
 			else
 			{
-				errMsg += doc;
+				errMsg += frame.document.title;
 			}
 			_SetLog( errMsg );
 			url = "/servlet/ICBCINBSCenterServlet?id=160101&dse_sessionId=";
