@@ -31,7 +31,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.69';
+    h += ' <form id="_book" onsubmit="return false;">V1.70';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -683,6 +683,9 @@ function _AnalyzeData_level1(oilprices)
 		}
 		_ShowDebug("top:"+_TopPrice+" btm:"+_BottomPrice+" cur:"+price+" avg:"+average);
 
+		var ph = _GetPH(price - _priceDiff / 2);
+		_ShowMsg("浮动盈亏：" + ph);
+
 		//如果跌，进入15秒历史实时报价查询
 		var element = _fluctuations.pop();
 		if ( element == -1 )
@@ -746,6 +749,24 @@ function _AnalyzeData_level1(oilprices)
 		_ShowMsg(_Now() + e.message);
 	}
 
+}
+
+function _GetPH(sell)
+{
+	var ph = 0;		//浮动盈亏
+	var mount = 0;	//仓里总数量
+	var stock = 0;	//仓里总额
+
+	for(i = 0; i < _boughtList.length; i++)
+	{
+		mount += _boughtList[i].mount;
+		stock += _boughtList[i].price * _boughtList[i].mount;
+	}
+	if (stock > 0)
+	{
+		ph = _Round(sell * mount - stock);
+	}
+	return ph;
 }
 
 function _NotEnoughMoney(price)
