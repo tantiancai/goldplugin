@@ -681,7 +681,7 @@ function _AnalyzeData_level1(oilprices)
 		{
 			average = _Round(totalPrice / oilprices.length);
 		}
-		_ShowDebug("top:"+_TopPrice+" btm:"+_BottomPrice+" cur:"+price+" avg:"+average);
+		_ShowDebug("高："+_TopPrice+" 低："+_BottomPrice+" 现："+price+" 均："+average);
 
 		var ph = _GetPH(price - _priceDiff / 2);
 		_ShowMsg("浮动盈亏：" + ph);
