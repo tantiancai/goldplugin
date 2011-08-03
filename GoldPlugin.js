@@ -31,7 +31,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.68';
+    h += ' <form id="_book" onsubmit="return false;">V1.69';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -493,7 +493,7 @@ function _Confirm()
 						_SetLog( _Now() + " 出现异常" );
 					}
 
-					if (frame.document.InfoForm.clock.value.indexOf("00:01") >= 0)
+					if (frame.document.InfoForm.clock.value.indexOf("00:00") >= 0)
 					{
 						clearInterval(_intervalConfirm);
 						_SetLog( _Now() + " 超时" );
