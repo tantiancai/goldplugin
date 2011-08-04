@@ -32,7 +32,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.75';
+    h += ' <form id="_book" onsubmit="return false;">V1.76';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -735,15 +735,21 @@ function _AnalyzeData_level1(oilprices)
 			if (_level == 2)
 			{
 				element = _fluctuations.pop();
-				if ( ( element == -1 )
-				  && ( _Round( max - bottom ) < _Round( price * 2.5 / 100 ) ) )
+				if ( element == -1 )
 				{
-					_level = 3;		//5秒查询当前报价
-					_status = 1;	//买
-					clearInterval(_intervalGetHistory);
-					_intervalReadyToGo = setInterval(_GetRealtime, 6000);	//5秒
-					frames['mainFrame'].frames['_left'].translink('0','903');	//白银买入页面，以后会增加选
-					_ShowMsg("即将买入，请勿点击任何链接");
+					if ( _Round( max - bottom ) < _Round( price * 2.5 / 100 ) ) )
+					{
+						_level = 3;		//5秒查询当前报价
+						_status = 1;	//买
+						clearInterval(_intervalGetHistory);
+						_intervalReadyToGo = setInterval(_GetRealtime, 6000);	//5秒
+						frames['mainFrame'].frames['_left'].translink('0','903');	//白银买入页面，以后会增加选
+						_ShowMsg("即将买入，请勿点击任何链接");
+					}
+					else
+					{
+						_ShowMsg(_Now() + " 最大跌幅超过2.5%，禁止买入");
+					}
 				}
 				else	//倒数第二回不是跌的情况
 				{
