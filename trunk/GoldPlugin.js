@@ -737,7 +737,7 @@ function _AnalyzeData_level1(oilprices)
 				element = _fluctuations.pop();
 				if ( element == -1 )
 				{
-					if ( _Round( max - bottom ) < _Round( price * 2.5 / 100 ) ) )
+					if ( _Round( max - bottom ) < _Round( price * 2.5 / 100 ) )
 					{
 						_level = 3;		//5秒查询当前报价
 						_status = 1;	//买
