@@ -438,7 +438,8 @@ function _Confirm()
 		var mount;
 
 		//页面尚未加载完毕
-		if ( ( frame.document.readyState != "interactive" )
+		if ( ( frame.document.readyState != "loaded" )
+		  && ( frame.document.readyState != "interactive" )
 		  && ( frame.document.readyState != "complete" ) )
 		{
 			//等待
