@@ -9,10 +9,15 @@
 
 待完成。
 
-加载代码：
+把以下链接添加进收藏夹：
+[javascript:void((function(){try{var%20e=top.frames['indexFrame'].frames['downFrame'].document.createElement('script');e.setAttribute('src','https://goldplugin.googlecode.com/svn/trunk/GoldPlugin.js');top.frames['indexFrame'].frames['downFrame'].document.body.appendChild(e);}catch(e){alert(e.message);}})()); 炒白银外挂]
+
+代码：
 {{{
 javascript:void((function(){try{var%20e=top.frames['indexFrame'].frames['downFrame'].document.createElement('script');e.setAttribute('src','https://goldplugin.googlecode.com/svn/trunk/GoldPlugin.js');top.frames['indexFrame'].frames['downFrame'].document.body.appendChild(e);}catch(e){alert(e.message);}})());
 }}}
+
+
 
 Add your content here.  Format your content with:
   * Text in *bold* or _italic_
