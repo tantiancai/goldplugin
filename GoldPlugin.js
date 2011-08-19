@@ -10,6 +10,7 @@ var _baseBuy = 0;
 var _baseSell = 0;
 var _TopPrice = 0;			//高位价格
 var _BottomPrice = 0;		//低位价格
+var _BottomBackup = 0;		//前回低位价格
 var _sellBtm = 0;
 var _sellTop = 0;
 var _buyBtm = 0;
@@ -32,7 +33,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.78';
+    h += ' <form id="_book" onsubmit="return false;">V1.80';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -312,6 +313,14 @@ function _ReadyToGo_Buy(buy, upOrDown)
 	}
 
 	_ShowMsg("实时买入价："+buy+"<br>高："+_buyTop+" 低："+_buyBtm+"<br>即将买入，请勿点击任何链接");
+
+	//当前价格小于前回最小值
+	if ( buy < _BottomBackup )
+	{
+		//取消交易
+		_StopAll();
+		_AutoStart();
+	}
 
 	if ( _baseBuy < _buyTop )
 	{
@@ -693,6 +702,7 @@ function _AnalyzeData_level1(oilprices)
 				if ( _Round( price - _BottomPrice ) >= _Round( ( _TopPrice - _BottomPrice ) / 3 ) )
 				{
 					bottom = _BottomPrice;
+					_BottomBackup = _BottomPrice;
 					_TopPrice = price;
 					_BottomPrice = price;
 					_fluctuations.push(0);	//添加语料，平
@@ -738,6 +748,7 @@ function _AnalyzeData_level1(oilprices)
 				element = _fluctuations.pop();
 				if ( element == -1 )
 				{
+					//谷底和最大值的差在2.5%之内
 					if ( _Round( max - bottom ) < _Round( price * 2.5 / 100 ) )
 					{
 						_level = 3;		//5秒查询当前报价
@@ -809,7 +820,8 @@ function _NotEnoughMoney(price)
 {
 	try
 	{
-		var mount = document.getElementById("_txtMount").value;
+		var txtMount = document.getElementById("_txtMount");
+		var mount = txtMount.value;
 		var frame = frames['mainFrame'].frames['_right'];
 		var doc = frame.document.documentElement.innerText.replace(",", "");
 		var moneyStart = doc.indexOf("可用资金：");
@@ -832,14 +844,16 @@ function _NotEnoughMoney(price)
 			else
 			{
 				//自动设置可以买入的数量
-				document.getElementById("_txtMount").value = Math.floor( parseFloat( money ) / price );
+				txtMount.value = Math.floor( parseFloat( money ) / price );
 				return false;
 			}
 		}
 		//已套牢3笔交易
 		else if ( _boughtList.length >= 3 )
 		{
-			document.getElementById("_txtMount").value = 100;
+			//交易数量减半
+			var half = ( _Round( mount / 2 ) > 100 ) ? _Round( mount / 2 ) : 100;
+			txtMount.value = half;
 			return false;
 		}
 		else
