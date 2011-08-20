@@ -17,6 +17,7 @@ var _buyBtm = 0;
 var _buyTop = 0;
 var _cntBuy = 0;		//涨的回数
 var _cntSell = 0;
+var _isBuyOnly = false;	//只买不卖
 var _boughtList = new Array();		//买入列表
 var _boughtNode;		//买入节点
 var _isBuying = false;	//是否买入
@@ -33,18 +34,25 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.80';
+    h += ' <form id="_book" onsubmit="return false;">V1.81';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
     h += '    <input id="_btnStopAll" onclick="_StopAll();" type="button" value="停止">';
-    h += '    <input id="_btnTest" onclick="_Test();" type="button" value="测试"><br />';
 	h += '    <input id="_btnForceBuy" onclick="_ForceBuy();" type="button" value="买入">';
     h += '    <input id="_btnForceSell" onclick="_ForceSell();" type="button" value="卖出">';
+	h += '    <br />';
 	h += '    <input id="_btnClearLog" onclick="_ClearLog();" type="button" value="清空">';
     h += '    <input id="_btnReadDetails" onclick="_ReadDetails();" type="button" value="明细">';
+	h += '    <input id="_chkBuyOnly" onclick="_BuyOnly(this.checked);" type="checkbox">'
+	h += '		<label for="_chkBuyOnly">只买</label>';
+	h += '    <input id="_chkShowTestArea" onclick="_ShowTestArea(this.checked);" type="checkbox">';
+	h += '		<label for="_chkShowTestArea">测试</label>';
     h += '    <br />';
-	h += '    <textarea id="_txtTest" rows="3" cols="20">_ShowMsg("测试");</textarea>';
+	h += '    <div id="_testArea" style="display:none">';
+    h += '		<input id="_btnTest" onclick="_Test();" type="button" value="测试"><br />';
+	h += '		<textarea id="_txtTest" rows="3" cols="20">_ShowMsg("测试");</textarea>';
+	h += '    </div>';
     h += '    <div id="_xmlHttpStatus"></div>';
     h += '    <div id="_msg"></div>';
     h += '    <div id="_debug"></div>';
@@ -79,6 +87,31 @@ function _GoldPluginInit()
     }
 
 	_GoldPlugin_layer = document.getElementById('_GoldPlugin_layer');
+}
+
+function _ShowTestArea(isShow)
+{
+	var testArea = document.getElementById('_testArea');
+	if (isShow == true)
+	{
+		testArea.style.display = 'inline';
+	}
+	else
+	{
+		testArea.style.display = 'none';
+	}
+}
+
+function _BuyOnly(isBuyOnly)
+{
+	if (isBuyOnly == true)
+	{
+		_isBuyOnly = true;
+	}
+	else
+	{
+		_isBuyOnly = false;
+	}
 }
 
 //强行买入
@@ -771,21 +804,23 @@ function _AnalyzeData_level1(oilprices)
 			}
 		}
 		
-		//有买入的历史记录
-		for(i = 0; i < _boughtList.length; i++)
+		if (_isBuyOnly == false)
 		{
-			if ( _Round( _boughtList[i].price + _priceDiff ) < price )
+			//有买入的历史记录
+			for(i = 0; i < _boughtList.length; i++)
 			{
-				_level = 3;		//5秒查询当前报价
-				_status = 2;	//卖
-				clearInterval(_intervalGetHistory);
-				_intervalReadyToGo = setInterval(_GetRealtime, 6000);		//5秒
-				frames['mainFrame'].frames['_left'].translink('1','903');	//白银卖出页面，以后会增加选择
-				_ShowMsg("即将卖出，请勿点击任何链接");
-				break;
+				if ( _Round( _boughtList[i].price + _priceDiff ) < price )
+				{
+					_level = 3;		//5秒查询当前报价
+					_status = 2;	//卖
+					clearInterval(_intervalGetHistory);
+					_intervalReadyToGo = setInterval(_GetRealtime, 6000);		//5秒
+					frames['mainFrame'].frames['_left'].translink('1','903');	//白银卖出页面，以后会增加选择
+					_ShowMsg("即将卖出，请勿点击任何链接");
+					break;
+				}
 			}
 		}
-
 	}
 	catch (e)
 	{
