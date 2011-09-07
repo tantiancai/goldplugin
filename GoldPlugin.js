@@ -34,7 +34,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.81';
+    h += ' <form id="_book" onsubmit="return false;">V1.82';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -580,7 +580,7 @@ function _Confirm()
 			frames['mainFrame'].location.href = url;
 		}
 		//交易失败
-		else
+		else if ( frame.document.title.indexOf("错误页面") >= 0 )
 		{
 			clearInterval(_intervalConfirm);
 			strStart = "提示信息:";
@@ -598,6 +598,11 @@ function _Confirm()
 			url = "/servlet/ICBCINBSCenterServlet?id=160101&dse_sessionId=";
 			url += _dseSessionId;
 			frames['mainFrame'].location.href = url;
+		}
+		//未知错误，等待
+		else
+		{
+			_ShowMsg( _Now() + " 无法查询状态" );
 		}
 	}
 	catch (e)
@@ -693,6 +698,8 @@ function _AnalyzeData_realtime(str)
 	catch (e)
 	{
 		_ShowMsg(_Now() + e.message);
+		_SetLog(_Now() + " 已退出登录，停止");
+		_StopAll();
 	}
 
 }
