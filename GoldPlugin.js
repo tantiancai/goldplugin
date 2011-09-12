@@ -23,6 +23,7 @@ var _boughtNode;		//买入节点
 var _isBuying = false;	//是否买入
 var _dealPrice = 0;		//交易金额
 var _dealTime;			//交易时间
+var _isHalf = false;	//交易数量是否已折半
 var _xmlhttp;
 var _areaCode = "";
 var _dseSessionId = "";
@@ -34,7 +35,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.82';
+    h += ' <form id="_book" onsubmit="return false;">V1.83';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -891,11 +892,12 @@ function _NotEnoughMoney(price)
 			}
 		}
 		//已套牢3笔交易
-		else if ( _boughtList.length >= 3 )
+		else if ( ( _boughtList.length >= 3 )
+			   && ( _isHalf == false ) )
 		{
 			//交易数量减半
-			var half = ( _Round( mount / 2 ) > 100 ) ? _Round( mount / 2 ) : 100;
-			txtMount.value = half;
+			txtMount.value = ( _Round( mount / 2 ) > 100 ) ? _Round( mount / 2 ) : mount;
+			_isHalf = true;
 			return false;
 		}
 		else
@@ -928,6 +930,7 @@ function _StopAll()
 	_sellTop = 0;
 	_status = 0;
 	_level = 1;
+	_isHalf = false;
     _ShowMsg("已停止");
 }
 
@@ -961,6 +964,7 @@ function _Init()
 		_sellTop = 0;
 		_status = 0;
 		_level = 1;
+		_isHalf = false;
 		var form = frames['mainFrame'].leftform;
 		_areaCode = form.area_code.value;
 		_dseSessionId = form.dse_sessionId.value;
