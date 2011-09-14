@@ -896,7 +896,7 @@ function _NotEnoughMoney(price)
 			   && ( _isHalf == false ) )
 		{
 			//交易数量减半
-			txtMount.value = ( _Round( mount / 2 ) > 100 ) ? _Round( mount / 2 ) : mount;
+			txtMount.value = ( _Round( mount / 2 ) >= 100 ) ? _Round( mount / 2 ) : mount;
 			_isHalf = true;
 			return false;
 		}
