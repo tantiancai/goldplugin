@@ -35,7 +35,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.83';
+    h += ' <form id="_book" onsubmit="return false;">V1.84';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -700,7 +700,7 @@ function _AnalyzeData_realtime(str)
 	{
 		_ShowMsg(_Now() + e.message);
 		_SetLog(_Now() + " 已退出登录，停止");
-		_StopAll();
+		//_StopAll();
 	}
 
 }
