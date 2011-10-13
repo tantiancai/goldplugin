@@ -10,7 +10,7 @@ var _baseBuy = 0;
 var _baseSell = 0;
 var _TopPrice = 0;			//高位价格
 var _BottomPrice = 0;		//低位价格
-var _BottomBackup = 0;		//前回低位价格
+var _BottomPriceBack = 0;	//前回低位价格
 var _sellBtm = 0;
 var _sellTop = 0;
 var _buyBtm = 0;
@@ -35,7 +35,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.84';
+    h += ' <form id="_book" onsubmit="return false;">V1.85';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -349,7 +349,7 @@ function _ReadyToGo_Buy(buy, upOrDown)
 	_ShowMsg("实时买入价："+buy+"<br>高："+_buyTop+" 低："+_buyBtm+"<br>即将买入，请勿点击任何链接");
 
 	//当前价格小于前回最小值
-	if ( buy < _BottomBackup )
+	if ( buy < _BottomPriceBack )
 	{
 		//取消交易
 		_StopAll();
@@ -726,10 +726,12 @@ function _AnalyzeData_level1(oilprices)
 			{
 				_TopPrice = price;		//涨，设置top
 				_BottomPrice = price;
+				_BottomPriceBack = price;
 			}
 			if (price < _BottomPrice)
 			{
 				_BottomPrice = price;	//跌，设置bottom
+				_BottomPriceBack = price;
 			}
 			if (max < price)
 			{
@@ -743,7 +745,7 @@ function _AnalyzeData_level1(oilprices)
 				if ( _Round( price - _BottomPrice ) >= _Round( ( _TopPrice - _BottomPrice ) / 3 ) )
 				{
 					bottom = _BottomPrice;
-					_BottomBackup = _BottomPrice;
+					_BottomPriceBack = _BottomPrice;
 					_TopPrice = price;
 					_BottomPrice = price;
 					_fluctuations.push(0);	//添加语料，平
