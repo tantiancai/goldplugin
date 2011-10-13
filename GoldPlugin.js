@@ -739,7 +739,7 @@ function _AnalyzeData_level1(oilprices)
 			}
 
 			if ( ( _Round( _TopPrice - _BottomPrice ) > limit )
-			  || ( _Round( _TopPrice - _BottomPrice ) > _Round( price / 100 ) ) )
+			  && ( _Round( _TopPrice - _BottomPrice ) > _Round( price / 100 ) ) )
 			{
 				_fluctuations.push(-1);	//添加语料，跌
 				if ( _Round( price - _BottomPrice ) >= _Round( ( _TopPrice - _BottomPrice ) / 3 ) )
