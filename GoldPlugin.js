@@ -763,7 +763,7 @@ function _AnalyzeData_level1(oilprices)
 		}
 
 		var obj = _GetPH(price - _priceDiff / 2);
-		_ShowDebug("高："+_TopPrice+" 低："+_BottomPrice+" 现："+price+"<br>浮动盈亏："+obj.ph+" 平均买入价："+obj.avg+" 买入数量："+obj.mount);
+		_ShowDebug("高："+_TopPrice+" 低："+_BottomPrice+" 现："+price+"<br>浮动盈亏："+obj.ph+"<br>平均买入价："+obj.avg+"<br>买入数量："+obj.mount);
 
 		//如果跌，进入15秒历史实时报价查询
 		var element = _fluctuations.pop();
