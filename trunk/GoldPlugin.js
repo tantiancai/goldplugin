@@ -35,7 +35,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.85';
+    h += ' <form id="_book" onsubmit="return false;">V1.86';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -699,7 +699,7 @@ function _AnalyzeData_realtime(str)
 	catch (e)
 	{
 		_ShowMsg(_Now() + e.message);
-		_SetLog(_Now() + " 已退出登录，停止");
+		_SetLog(_Now() + e.message + " 可能已退出，请重新登录");
 		//_StopAll();
 	}
 
@@ -762,8 +762,8 @@ function _AnalyzeData_level1(oilprices)
 			average = _Round(totalPrice / oilprices.length);
 		}
 
-		var ph = _GetPH(price - _priceDiff / 2);
-		_ShowDebug("高："+_TopPrice+" 低："+_BottomPrice+" 现："+price+" 均："+average+"<br>浮动盈亏："+ph);
+		var obj = _GetPH(price - _priceDiff / 2);
+		_ShowDebug("高："+_TopPrice+" 低："+_BottomPrice+" 现："+price+"<br>浮动盈亏："+obj.ph+" 平均买入价："+obj.avg+" 买入数量："+obj.mount);
 
 		//如果跌，进入15秒历史实时报价查询
 		var element = _fluctuations.pop();
@@ -842,6 +842,7 @@ function _AnalyzeData_level1(oilprices)
 function _GetPH(sell)
 {
 	var ph;			//浮动盈亏
+	var avg = 0;	//均价
 	var mount = 0;	//仓里总数量
 	var stock = 0;	//仓里总额
 
@@ -853,12 +854,13 @@ function _GetPH(sell)
 	if (stock > 0)
 	{
 		ph = _Round(sell * mount - stock);
+		avg = _Round(stock / mount);
 	}
 	else
 	{
 		ph = "尚未买入";
 	}
-	return ph;
+	return {'ph':ph, 'avg':avg, 'mount':mount};
 }
 
 function _NotEnoughMoney(price)
