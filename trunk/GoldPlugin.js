@@ -35,7 +35,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.88';
+    h += ' <form id="_book" onsubmit="return false;">V1.89';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -791,8 +791,8 @@ function _AnalyzeData_level1(oilprices)
 				element = _fluctuations.pop();
 				if ( element == -1 )
 				{
-					//高位和谷底的差在2.5%之内
-					if ( _Round( max - bottom ) < _Round( price * 2.5 / 100 ) )
+					//高位和谷底的差在3.0%之内
+					if ( _Round( max - bottom ) < _Round( max * 3.0 / 100 ) )
 					{
 						_level = 3;		//5秒查询当前报价
 						_status = 1;	//买
