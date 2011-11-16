@@ -35,7 +35,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.90';
+    h += ' <form id="_book" onsubmit="return false;">V1.91';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -738,11 +738,11 @@ function _AnalyzeData_level1(oilprices)
 				max = price;
 			}
 
-			if ( ( _Round( _TopPrice - _BottomPrice ) > limit )
+			if ( ( _Round( _TopPrice - _BottomPrice ) >= limit )
 			  && ( _Round( _TopPrice - _BottomPrice ) > _Round( price / 100 ) ) )
 			{
 				_fluctuations.push(-1);	//添加语料，跌
-				if ( _Round( price - _BottomPrice ) > _Round( ( _TopPrice - _BottomPrice ) / 3 ) )
+				if ( _Round( price - _BottomPrice ) >= _Round( ( _TopPrice - _BottomPrice ) / 3 ) )
 				{
 					bottom = _BottomPrice;
 					_BottomPriceBack = _BottomPrice;
