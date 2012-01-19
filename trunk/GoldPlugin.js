@@ -708,7 +708,7 @@ function _AnalyzeData_realtime(str)
 function _AnalyzeData_level1(oilprices)
 {
 	var price = 0;					//当前价格
-	var limit = _Round(_priceDiff * 2.4);	//2.4倍差价
+	var limit = _Round(_priceDiff * 2.25);	//2.25倍差价
 	var i = 0;
 	var totalPrice = 0;
 	var average = 0;
