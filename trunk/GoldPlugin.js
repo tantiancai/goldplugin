@@ -35,7 +35,7 @@ function _GoldPluginInit()
     var agt = navigator.userAgent.toLowerCase();
     var h = '';
     h += '<div id="_GoldPlugin" style="overflow:auto; width: 220px; height: 260px;">';
-    h += ' <form id="_book" onsubmit="return false;">V1.92';
+    h += ' <form id="_book" onsubmit="return false;">V1.93';
     h += '    买入数量：<input id="_txtMount" type="text" size="5" value="100">';
     h += '    <br />';
     h += '    <input id="_btnAutoStart" onclick="_Init();_AutoStart();" type="submit" value="开始">';
@@ -52,7 +52,16 @@ function _GoldPluginInit()
     h += '    <br />';
 	h += '    <div id="_testArea" style="display:none">';
     h += '		<input id="_btnTest" onclick="_Test();" type="button" value="测试"><br />';
-	h += '		<textarea id="_txtTest" rows="3" cols="20">_ShowMsg("测试");</textarea>';
+	h += '		<textarea id="_txtTest" rows="3" cols="20">var str="_boughtList=[];<br>";';
+	h += 'for(var i = 0; i < _boughtList.length; i++)';
+	h += '{';
+	h += '	str += "_boughtList.push({\"time\":0,\"price\":";';
+	h += '	str += _boughtList[i].price;';
+	h += '	str += ",\"mount\":";';
+	h += '	str += _boughtList[i].mount + "})\;<br>";';
+	h += '}';
+	h += 'str += "_SetCookie();<br>";';
+	h += '_ShowMsg(str);</textarea>';
 	h += '    </div>';
     h += '    <div id="_xmlHttpStatus"></div>';
     h += '    <div id="_msg"></div>';
