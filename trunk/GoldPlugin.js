@@ -812,7 +812,7 @@ function _AnalyzeData_level1(oilprices)
 					}
 					else
 					{
-						_ShowMsg(_Now() + " 最大跌幅超过2.5%，禁止买入");
+						_ShowMsg(_Now() + " 最大跌幅超过3.0%，禁止买入");
 					}
 				}
 				else	//倒数第二回不是跌的情况
